@@ -1,0 +1,38 @@
+{
+  "stripe": {
+    "circuitBreaker": {
+      "state": "closed",
+      "failureCount": 0,
+      "lastFailure": null,
+      "nextAttempt": null,
+      "failureThreshold": 5,
+      "cooldownTime": 30000
+    },
+    "metrics": {
+      "totalRetries": 2,
+      "totalSuccesses": 19,
+      "totalFailures": 0,
+      "circuitTransitions": []
+    },
+    "totalAttempts": 26,
+    "totalFailures": 0
+  },
+  "paypal": {
+    "circuitBreaker": {
+      "state": "closed",
+      "failureCount": 0,
+      "lastFailure": null,
+      "nextAttempt": null,
+      "failureThreshold": 5,
+      "cooldownTime": 30000
+    },
+    "metrics": {
+      "totalRetries": 2,
+      "totalSuccesses": 4,
+      "totalFailures": 0,
+      "circuitTransitions": []
+    },
+    "totalAttempts": 4,
+    "totalFailures": 0
+  }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "tenantId": "e30dca3d-95f2-4979-8797-b0ca890455ec",
+    "name": "Helping Hands",
+    "preferredProcessor": "stripe",
+    "apiKey": "3451f522786685e013badfd11263d7f5:afa57893c194c6b8db93b806fcf3288b"
+  },
+  {
+    "tenantId": "cf569e9b-9666-4445-a622-c824024bad3d",
+    "name": "Charity PayPal",
+    "preferredProcessor": "paypal",
+    "apiKey": "1724ffb793e32b3e136f7059c16e011b:92937aa11519be244154369ce8536f94"
+  }
+]

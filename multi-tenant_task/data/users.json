@@ -1,0 +1,16 @@
+[
+  {
+    "userId": "admin-1",
+    "username": "admin",
+    "password": "adminpass",
+    "role": "admin",
+    "tenantId": "e30dca3d-95f2-4979-8797-b0ca890455ec"
+  },
+  {
+    "userId": "viewer-1",
+    "username": "viewer",
+    "password": "viewerpass",
+    "role": "viewer",
+    "tenantId": "e30dca3d-95f2-4979-8797-b0ca890455ec"
+  }
+] 
