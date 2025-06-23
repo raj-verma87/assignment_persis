@@ -3,7 +3,7 @@ const logger = require('../utils/logger');
 class RiskEngine {
   constructor() {
     this.highRiskAmountThreshold = parseFloat(process.env.HIGH_RISK_AMOUNT_THRESHOLD) || 10000;
-    this.highRiskEmailDomains = (process.env.HIGH_RISK_EMAIL_DOMAINS || '.ru,.fraud.net,.scam.com')
+    this.highRiskEmailDomains = (process.env.HIGH_RISK_EMAIL_DOMAINS || 'ru,fraud.net,scam.com')
       .split(',')
       .map(domain => domain.trim().toLowerCase());
     
@@ -64,25 +64,25 @@ class RiskEngine {
         type: 'high_amount',
         severity: 'high',
         description: `Transaction amount (${amount} ${currency}) exceeds threshold (${this.highRiskAmountThreshold} ${currency})`,
-        weight: 0.3
+        weight: 0.7
       });
     } else if (amount > this.highRiskAmountThreshold * 0.7) {
       factors.push({
         type: 'moderate_amount',
         severity: 'moderate',
         description: `Transaction amount (${amount} ${currency}) is approaching threshold`,
-        weight: 0.15
+        weight: 0.25
       });
     }
 
     // Email domain risk
     const emailDomain = email.split('@')[1]?.toLowerCase();
-    if (emailDomain && this.highRiskEmailDomains.some(domain => emailDomain.endsWith(domain))) {
+    if (emailDomain && this.highRiskEmailDomains.some(domain => emailDomain === domain || emailDomain.endsWith('.' + domain))) {
       factors.push({
         type: 'suspicious_email_domain',
         severity: 'high',
         description: `Email domain (${emailDomain}) is flagged as high-risk`,
-        weight: 0.4
+        weight: 0.7
       });
     }
 
@@ -93,14 +93,14 @@ class RiskEngine {
         type: 'repeated_ip',
         severity: 'high',
         description: `IP address has been used ${ipCount} times previously`,
-        weight: 0.25
+        weight: 0.5
       });
     } else if (ipCount > 2) {
       factors.push({
         type: 'moderate_ip_repetition',
         severity: 'moderate',
         description: `IP address has been used ${ipCount} times previously`,
-        weight: 0.1
+        weight: 0.2
       });
     }
 
@@ -111,14 +111,14 @@ class RiskEngine {
         type: 'repeated_device',
         severity: 'high',
         description: `Device fingerprint has been used ${deviceCount} times previously`,
-        weight: 0.3
+        weight: 0.5
       });
     } else if (deviceCount > 1) {
       factors.push({
         type: 'moderate_device_repetition',
         severity: 'moderate',
         description: `Device fingerprint has been used ${deviceCount} times previously`,
-        weight: 0.15
+        weight: 0.25
       });
     }
 
@@ -155,19 +155,14 @@ class RiskEngine {
     }
 
     let totalScore = 0;
-    let totalWeight = 0;
 
     riskFactors.forEach(factor => {
       const severityMultiplier = factor.severity === 'high' ? 1.0 : 0.6;
       totalScore += factor.weight * severityMultiplier;
-      totalWeight += factor.weight;
     });
 
-    // Normalize score to 0-1 range
-    const normalizedScore = totalWeight > 0 ? totalScore / totalWeight : 0;
-    
-    // Apply sigmoid-like function to smooth the score
-    return Math.min(0.95, Math.max(0.05, normalizedScore));
+    // Cap the score at 0.95 to leave room for extreme cases
+    return Math.min(0.95, Math.max(0.05, totalScore));
   }
 
   /**

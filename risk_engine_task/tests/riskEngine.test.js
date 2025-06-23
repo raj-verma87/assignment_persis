@@ -147,7 +147,7 @@ describe('RiskEngine', () => {
       expect(stats.uniqueIPs).toBe(1);
       expect(stats.uniqueDevices).toBe(1);
       expect(stats.uniqueEmails).toBe(1);
-      expect(stats.highRiskDomains).toContain('.fraud.net');
+      expect(stats.highRiskDomains).toContain('fraud.net');
       expect(stats.amountThreshold).toBe(10000);
     });
   });
